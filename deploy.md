@@ -37,7 +37,15 @@
 ssh root@ 127.92.0.131 -p 22111
 ```
 
-При первом подключении у вас запросят подтвердить обмен ключами, необходимо ввести `yes`. 
+При первом подключении у вас запросят подтвердить обмен ключами
+
+```bash
+The authenticity of host '127.92.0.131 (127.92.0.131)' can't be established.
+ECDSA key fingerprint is SHA256:ABCDE9vncSmuYvHi8hq+j0U8NzvjcwIvfX84tvv6S3bvvY.
+Are you sure you want to continue connecting (yes/no/[fingerprint])?
+```
+
+Необходимо ввести `yes`. 
 
 Затем будет предложено ввести пароль. 
 
@@ -61,7 +69,7 @@ Welcome to Ubuntu 22.04.1 LTS (GNU/Linux 5.4.0-146-generic x86_64)
    Ubuntu Pro subscription. Free for personal use.
 
      https://ubuntu.com/pro
-Last login: Tue Jun 20 12:02:39 2023 from 18.11.89.197
+Last login: Tue Jun 20 12:02:39 2023 from 192.168.8.7
 root@bot-111:~#
 ```
 
