@@ -33,13 +33,13 @@
 
 `ssh имя_пользователя@IP_адрес -p номер порта`:
 
-```bash
+``` 
 ssh root@ 127.92.0.131 -p 22111
 ```
 
 При первом подключении у вас запросят подтвердить обмен ключами
 
-```bash
+```
 The authenticity of host '127.92.0.131 (127.92.0.131)' can't be established.
 ECDSA key fingerprint is SHA256:ABCDE9vncSmuYvHi8hq+j0U8NzvjcwIvfX84tvv6S3bvvY.
 Are you sure you want to continue connecting (yes/no/[fingerprint])?
@@ -49,7 +49,7 @@ Are you sure you want to continue connecting (yes/no/[fingerprint])?
 
 Затем будет предложено ввести пароль. 
 
-```bash
+```
 root@127.92.0.131's password:
 ```
 
@@ -57,7 +57,7 @@ root@127.92.0.131's password:
 
 Появится приглашение ввода команд:
 
-```bash
+```
 Welcome to Ubuntu 22.04.1 LTS (GNU/Linux 5.4.0-146-generic x86_64)
 
  * Documentation:  https://help.ubuntu.com
