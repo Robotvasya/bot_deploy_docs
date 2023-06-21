@@ -319,3 +319,9 @@ systemctl stop tgbot
 ```
 systemctl disable tgbot
 ```
+
+## todo:
+
+* Добавить работу с пременными окружения
+* Добавить работу с логами
+
