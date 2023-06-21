@@ -198,9 +198,9 @@ After=network.target
 User=tgbot
 Group=tgbot
 Type=simple
-WorkingDirectory=/opt/my_bot/
+WorkingDirectory=/opt/my_bot
 ExecStart=/opt/my_bot/venv/bin/python /opt/my_bot/cli.py
-Restart=always
+Restart=on-failure
 RestartSec=5
 StartLimitBurst=5
 
@@ -208,11 +208,13 @@ StartLimitBurst=5
 WantedBy=multi-user.target
 
 ```
-Не забываем в конце добавить пустую строку и нажимаем `Ctrl + D`.
+Не забываем в конце добавить пустую строку и нажимаем `Ctrl + D`. 
 
 В Midnight Commander редактирование файла `F4` (при первом вызове выберите редактор mcedit). 
 
-Description – это описание нашего бота.
+Обратим внимание на параметры в файле tgbot.service:
+
+Description=Test echo Bot – это описание нашего бота.
 
 After=network.target – это указание, что бот должен быть запущен только после того, как стартует сервис сети. Можно указывать еще, что после старта базы данных: 
 
@@ -229,7 +231,7 @@ ExecStart=/opt/my_bot/venv/bin/python /opt/my_bot/cli.py — здесь указ
 
 Эти параметры определяют как будет происходить перезапуск:
 
-Restart=always – Перезапускать всегда. Может быть значение on-failure.
+Restart=always – Перезапускать всегда. Может быть значение on-failure, как в моем случае.
 
 RestartSec=5 – Запустить через 5 секунд. 
 
