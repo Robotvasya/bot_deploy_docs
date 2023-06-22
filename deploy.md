@@ -160,7 +160,7 @@ deactivate
 
 ## 4. Переменные окружения
 
-   in progress..
+    in progress..
 
 ## 5. Настройка бота как сервиса с автозапуском
 
@@ -196,6 +196,7 @@ touch tgbot.service
 ```
 [Unit]
 Description=Test echo Bot
+After=syslog.target
 After=network.target
 
 [Service]
@@ -207,6 +208,10 @@ ExecStart=/opt/my_bot/venv/bin/python /opt/my_bot/cli.py
 Restart=on-failure
 RestartSec=5
 StartLimitBurst=5
+# Переменные окружения
+#
+#
+
 
 [Install]
 WantedBy=multi-user.target
@@ -283,6 +288,18 @@ root@bot-111:/opt/my_bot# systemctl status tgbot
 Jun 21 11:13:16 bot-103 systemd[1]: Started Test echo Bot.
 ```
 
+Проверяем, что процесс запущен от нужного пользователя tgbot. Для этого берем из вывода выше Main PID и подставляем в команду:
+
+```
+ps -u -p 2955
+```
+
+и видим:
+
+```
+USER         PID  %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+tgbot        2955  0.0 10.2 137256 51344 ?        Ssl  Jun21   0:14 /opt/my_bot/venv/bin/python /opt/my_bot/cli.py
+```
 Если ошибки есть, то они будут отображены примерно так:
 
 ```
