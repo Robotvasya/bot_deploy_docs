@@ -41,7 +41,7 @@ ssh root@127.92.0.131 -p 22111
 
 ```
 The authenticity of host '127.92.0.131 (127.92.0.131)' can't be established.
-ECDSA key fingerprint is SHA256:ABCDE9vncSmuYvHi8hq+j0U8NzvjcwIvfX84tvv6S3bvvY.
+ECDSA key fingerprint is SHA256:ABCDEasdfgAsDhgf+ffgIHKJHgLbvcxxcctvv6S3bvvY.
 Are you sure you want to continue connecting (yes/no/[fingerprint])?
 ```
 
@@ -169,8 +169,7 @@ deactivate
 В целях безопасности, бот будет работать от пользователя с минимальными привилегиями. Создадим пользователя tgbot без возможности sudo и без прав логиниться в систему. 
 
 ```
-adduser --system tgbot 
- 
+adduser --system tgbot  
 ```
 
 Отвечать за запуск и перезапуск бота, а также ротацию логов будет systemd.
@@ -182,8 +181,8 @@ adduser --system tgbot
 ```
 cat >  tgbot.service
 ```
-Вставляем текст файла, приведенный ниже. 
 
+Вставляем текст файла, приведенный ниже. 
 
 ```
 mkdir systemd
@@ -285,7 +284,7 @@ root@bot-111:/opt/my_bot# systemctl status tgbot
      CGroup: /system.slice/tgbot.service
              └─2955 /opt/my_bot/venv/bin/python /opt/my_bot/cli.py
 
-Jun 21 11:13:16 bot-103 systemd[1]: Started Test echo Bot.
+Jun 21 11:13:16 bot-111 systemd[1]: Started Test echo Bot.
 ```
 
 Проверяем, что процесс запущен от нужного пользователя tgbot. Для этого берем из вывода выше Main PID и подставляем в команду:
@@ -300,6 +299,7 @@ ps -u -p 2955
 USER         PID  %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
 tgbot        2955  0.0 10.2 137256 51344 ?        Ssl  Jun21   0:14 /opt/my_bot/venv/bin/python /opt/my_bot/cli.py
 ```
+
 Если ошибки есть, то они будут отображены примерно так:
 
 ```
@@ -312,9 +312,9 @@ systemctl status tgbot
     Process: 2730 ExecStart=/opt/my_bot/venv/bin/python /opt/my_bot/cli.py (code=exited, status=200/CHDIR)
    Main PID: 2730 (code=exited, status=200/CHDIR)
 
-Jun 21 10:47:29 bot-103 systemd[2730]: tgbot.service: Failed at step CHDIR spawning /opt/bbt/venv/bin/python: No such file or directory
-Jun 21 10:47:29 bot-103 systemd[1]: tgbot.service: Main process exited, code=exited, status=200/CHDIR
-Jun 21 10:47:29 bot-103 systemd[1]: tgbot.service: Failed with result 'exit-code'.
+Jun 21 10:47:29 bot-111 systemd[2730]: tgbot.service: Failed at step CHDIR spawning /opt/bbt/venv/bin/python: No such file or directory
+Jun 21 10:47:29 bot-111 systemd[1]: tgbot.service: Main process exited, code=exited, status=200/CHDIR
+Jun 21 10:47:29 bot-111 systemd[1]: tgbot.service: Failed with result 'exit-code'.
 ```
 
 Ошибка произошла, поскольку я ошибся в строках `WorkingDirectory=/opt/my_bot/` и `ExecStart=/opt/my_bot/venv/bin/python /opt/my_bot/cli.py`. 
