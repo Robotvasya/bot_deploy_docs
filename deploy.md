@@ -489,6 +489,7 @@ systemctl restart tgbot.service
 https://bertptrs.nl/2021/09/05/securely-passing-secrets-to-dynamicuser-systemd-services.html
 https://blog.sergeantbiggs.net/posts/credential-management-with-systemd/
 https://systemd.io/CREDENTIALS/
+https://nickb.dev/blog/writing-a-secure-systemd-service-with-sandboxing-and-dynamic-users/
 
 ## 6. Работа с логами.
 
