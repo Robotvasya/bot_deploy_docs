@@ -484,6 +484,12 @@ systemctl restart tgbot.service
 ```
 
 
+### Переменные окружения для хранения ключей, токенов и паролей
+
+https://bertptrs.nl/2021/09/05/securely-passing-secrets-to-dynamicuser-systemd-services.html
+https://blog.sergeantbiggs.net/posts/credential-management-with-systemd/
+https://systemd.io/CREDENTIALS/
+
 ## 6. Работа с логами.
 
    in progress..
