@@ -381,7 +381,7 @@ Environment=BOT_CA_FILE=/path/to/CA.pem BOT_CERT_FILE=/path/to/server.crt BOT_KE
 
 EnvironmentFile аналогична директиве Environment, но считывает переменные окружения из текстового файла. Текстовый файл должен содержать назначения переменных, разделенных новыми строками.
 
-Создадим файл переменных envlist.env
+Создадим файл переменных tgbot_envlist
 
 ```
 IPV4_ANCHOR_0=X.X.X.X
@@ -396,14 +396,92 @@ HOSTNAME=test.example.com
 ...
 [Service]
 ...
-EnvironmentFile=/opt/my_bot/env_dir/envlist.env
+EnvironmentFile=/opt/my_bot/env_dir/tgbot_envlist
 ...
 
 ```
 
 ### Вариант 3. Создание drop-in файла конфигурации.
-### Вариант 4. 
 
+ВНИМАНИЕ,  данный вариант на конкретном хостинге не работает корректно.
+
+Когда у вас уже создан файл вашего юнита tgbot.service, мы можем создать drop-in файл. Это файл конфигурации, в котором будут находиться дополнительные настройки или настройки, которые заменяют значения основного файла юнита.
+
+Выполняем команду `systemctl edit tgbot.service`. В папке `/etc/systemd/system` будет создана папка с именем вашего сервиса `tgbot.service.d`. Внутри будет создан файл с раширением .conf по умолчанию это override.conf.
+
+Файл будет содержать закомментированное содержимое исходного файла юнита, и можно указывать только те секции и только те значения, которые мы хотим добавить или заменить.
+
+Например:
+
+```
+systemctl edit tgbot.service
+```
+
+Откроется окно редактирования файла override.conf:
+
+```
+### Editing /etc/systemd/system/tgbot.service.d/override.conf
+### Anything between here and the comment below will become the new contents of the file
+
+### Editing /etc/systemd/system/tgbot.service.d/override.conf
+### Anything between here and the comment below will become the new contents of the file
+
+### Lines below this comment will be discarded
+
+### /etc/systemd/system/tgbot.service
+# [Unit]
+# Description=Test echo Bot
+# After=network.target
+#
+# [Service]
+# User=tgbot2
+# Group=tgbot
+# Type=simple
+# WorkingDirectory=/opt/bbt
+# ExecStart=/opt/bbt/venv/bin/python /opt/bbt/cli.py
+# Restart=on-failure
+# RestartSec=5
+# StartLimitBurst=5
+#
+# [Install]
+# WantedBy=multi-user.target
+```
+
+Добавим внизу строки 
+
+```
+[Service]
+Environment=TEST_ENV="ABCDEF"
+```
+и сохраним файл.
+
+Теперь после перезагрузки `systemd daemon-reload` нам становится доступна переменная окружения `TEST_ENV` со значением `ABCDEF`. И мы ее можем импортировать в нашем коде бота так:
+
+```
+import os
+
+NEW_ENV_VAR = os.environ.get("TEST_ENV")
+print(NEW_ENV_VAR)
+```
+
+Drop-in файлы используются чаще всего для хранения настроек баз данных.
+
+После всех правок перезагружаем systemd и перезагружаем сервис бота:
+
+```
+systemctl daemon-reload
+systemctl restart tgbot.service
+```
+
+
+### Вариант 4. Временные переменные окружения
+
+Для временного изменения используйте команду systemctl set-environment. Применяется ко всем пользовательским службам, созданным после установки переменных окружения, но не к службам, которые уже были запущены. Данные значения НЕ заменяют значения файла  tgbot.service.
+
+```
+systemctl set-environment VAR1=value1 VAR2=value2
+systemctl restart tgbot.service
+```
 
 
 ## 6. Работа с логами.
