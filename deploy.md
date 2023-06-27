@@ -196,7 +196,6 @@ After=network.target
 
 [Service]
 User=tgbot
-Group=tgbot
 Type=simple
 WorkingDirectory=/opt/my_bot
 ExecStart=/opt/my_bot/venv/bin/python /opt/my_bot/cli.py
@@ -403,13 +402,9 @@ EnvironmentFile=/opt/my_bot/env_dir/tgbot_envlist
 
 ### Вариант 3. Создание drop-in файла конфигурации.
 
-ВНИМАНИЕ,  данный вариант на конкретном хостинге не работает корректно.
-
 Когда у вас уже создан файл вашего юнита tgbot.service, мы можем создать drop-in файл. Это файл конфигурации, в котором будут находиться дополнительные настройки или настройки, которые заменяют значения основного файла юнита.
 
-Выполняем команду `systemctl edit tgbot.service`. В папке `/etc/systemd/system` будет создана папка с именем вашего сервиса `tgbot.service.d`. Внутри будет создан файл с раширением .conf по умолчанию это override.conf.
-
-Файл будет содержать закомментированное содержимое исходного файла юнита, и можно указывать только те секции и только те значения, которые мы хотим добавить или заменить.
+Выполняем команду `systemctl edit tgbot.service. Откроется редактор, который будет содержать закомментированное содержимое исходного файла юнита, и можно указывать только те секции и только те значения, которые мы хотим добавить или заменить.
 
 Например:
 
@@ -453,7 +448,7 @@ systemctl edit tgbot.service
 [Service]
 Environment=TEST_ENV="ABCDEF"
 ```
-и сохраним файл.
+и сохраним файл под именем local.conf. В папке `/etc/systemd/system` будет создана папка с именем вашего сервиса `tgbot.service.d`. Внутри будет создан файл `local.conf`.
 
 Теперь после перезагрузки `systemd daemon-reload` нам становится доступна переменная окружения `TEST_ENV` со значением `ABCDEF`. И мы ее можем импортировать в нашем коде бота так:
 
@@ -473,18 +468,68 @@ systemctl daemon-reload
 systemctl restart tgbot.service
 ```
 
-
 ### Вариант 4. Временные переменные окружения
 
-Для временного изменения используйте команду systemctl set-environment. Применяется ко всем пользовательским службам, созданным после установки переменных окружения, но не к службам, которые уже были запущены. Данные значения НЕ заменяют значения файла  tgbot.service.
+Для временного изменения используйте команду `systemctl set-environment`. Применяется ко всем пользовательским службам, созданным после установки переменных окружения, но не к службам, которые уже были запущены. Данные значения НЕ заменяют значения файла  tgbot.service.
 
 ```
 systemctl set-environment VAR1=value1 VAR2=value2
 systemctl restart tgbot.service
 ```
+Для удаления временной переменной используйте команду `systemctl unset-environment VARIABLE`
+
+```
+systemctl unset-environment VAR1 VAR2
+systemctl restart tgbot.service
+```
 
 
-### Переменные окружения для хранения ключей, токенов и паролей
+### 5. Переменные окружения для хранения ключей, токенов и паролей
+
+Чувствительные данные не всегда можно хранить в файлах конфигурации системы и конфигурации юнита. Это не очень безопасно, а еще и при отладке системы конфигурационные файлы выводятся на экран. Поэтому в systemd для этих целей есть диретива `LoadCredential=`, которая добавляется в раздел [Service] файла tgbot.service. В домашней папке пользователя root создадим файл, в котором будет лежать наш ключ Telegram API:
+
+```
+touch /root/bot_tokens.txt
+```
+
+Добавим туда наш ключ, и файл будет выглядеть так :
+
+```
+bot_token="AAAABBB:SDDTYytntYtyhkfdERGERCCFerwec1233446767"
+```
+
+Установим права на файл таким образом, что только root может читать из этого файла.
+
+```
+chmod 600 /root/bot_tokens.txt
+```
+
+
+Добавим это в наш файл tgbot.service.
+
+```
+[Unit]
+Description=Test echo Bot
+After=syslog.target
+After=network.target
+
+[Service]
+User=tgbot
+Type=simple
+WorkingDirectory=/opt/my_bot
+ExecStart=/opt/my_bot/venv/bin/python /opt/my_bot/cli.py
+Restart=on-failure
+RestartSec=5
+StartLimitBurst=5
+
+# LoadCredential=Имя_ключа:путь+к_файлу
+LoadCredential=bot_token:/root/bot_tokens.txt
+
+[Install]
+WantedBy=multi-user.target
+
+```
+
 
 https://bertptrs.nl/2021/09/05/securely-passing-secrets-to-dynamicuser-systemd-services.html
 https://blog.sergeantbiggs.net/posts/credential-management-with-systemd/
