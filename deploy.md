@@ -483,59 +483,6 @@ systemctl unset-environment VAR1 VAR2
 systemctl restart tgbot.service
 ```
 
-
-### 5. Переменные окружения для хранения ключей, токенов и паролей
-
-Чувствительные данные не всегда можно хранить в файлах конфигурации системы и конфигурации юнита. Это не очень безопасно, а еще и при отладке системы конфигурационные файлы выводятся на экран. Поэтому в systemd для этих целей есть диретива `LoadCredential=`, которая добавляется в раздел [Service] файла tgbot.service. В домашней папке пользователя root создадим файл, в котором будет лежать наш ключ Telegram API:
-
-```
-touch /root/bot_tokens.txt
-```
-
-Добавим туда наш ключ, и файл будет выглядеть так :
-
-```
-bot_token="AAAABBB:SDDTYytntYtyhkfdERGERCCFerwec1233446767"
-```
-
-Установим права на файл таким образом, что только root может читать из этого файла.
-
-```
-chmod 600 /root/bot_tokens.txt
-```
-
-
-Добавим это в наш файл tgbot.service.
-
-```
-[Unit]
-Description=Test echo Bot
-After=syslog.target
-After=network.target
-
-[Service]
-User=tgbot
-Type=simple
-WorkingDirectory=/opt/my_bot
-ExecStart=/opt/my_bot/venv/bin/python /opt/my_bot/cli.py
-Restart=on-failure
-RestartSec=5
-StartLimitBurst=5
-
-# LoadCredential=Имя_ключа:путь+к_файлу
-LoadCredential=bot_token:/root/bot_tokens.txt
-
-[Install]
-WantedBy=multi-user.target
-
-```
-
-
-https://bertptrs.nl/2021/09/05/securely-passing-secrets-to-dynamicuser-systemd-services.html
-https://blog.sergeantbiggs.net/posts/credential-management-with-systemd/
-https://systemd.io/CREDENTIALS/
-https://nickb.dev/blog/writing-a-secure-systemd-service-with-sandboxing-and-dynamic-users/
-
 ## 6. Работа с логами.
 
    in progress..
