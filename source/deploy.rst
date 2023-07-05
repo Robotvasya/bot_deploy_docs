@@ -34,10 +34,12 @@
 Подключение:
 ~~~~~~~~~~~~
 
-Открываем терминал Linux, MacOS или Windows PowerShell и в командной строке выполняем команду ``ssh имя_пользователя@IP_адрес -p номер_порта`` ::
-  ssh root@127.92.0.131 -p 22111
+Открываем терминал Linux, MacOS или Windows PowerShell и в командной строке выполняем команду ``ssh имя_пользователя@IP_адрес -p номер_порта``::
+
+	ssh root@127.92.0.131 -p 22111
 
 При первом подключении у вас запросят подтвердить обмен ключами::
+
   The authenticity of host '127.92.0.131 (127.92.0.131)' can't be established.
   ECDSA key fingerprint is SHA256:ABCDEasdfgAsDhgf+ffgIHKJHgLbvcxxcctvv6S3bvvY.
   Are you sure you want to continue connecting (yes/no/[fingerprint])?
