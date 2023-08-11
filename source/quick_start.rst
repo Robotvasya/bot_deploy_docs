@@ -66,7 +66,7 @@
 
 Вставляем:
 
-.. code-block:: bash
+.. code-block:: ini
 
   [Unit]
   Description=Test echo Bot
