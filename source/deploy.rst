@@ -153,6 +153,11 @@
 
   adduser --system tgbot  
 
+Добавим права на файлы бота для нового пользователя::
+
+  chown -R tgbot /opt/my_bot
+
+
 Отвечать за запуск и перезапуск бота, а также ротацию логов будет *systemd*.
 
 Для этого нам необходимо создать новый юнит — службу для управления нашим ботом.
@@ -182,13 +187,15 @@
   Restart=on-failure
   RestartSec=5
   StartLimitBurst=5
+  
   # Переменные окружения. Для более подробной информации см. раздел 5 "Переменные окружения" настоящего руководства. 
-  # (измените переменные перед вставкой на свои или удалите эти строки, если не используете): 
-  # В виде ключ = значение
-  Environment="VAR1=word1 word2" VAR2=word3
-  Environment=Var3=word4
+  # (измените переменные перед вставкой на свои или удалите эти строки, если не используете).
+
+  # В виде ключ = значение:
+  # Environment="VAR1=word1 word2" VAR2=word3
+  # Environment=Var3=word4
   # Из файла 
-  EnvironmentFile=-/etc/sysconf/mysqld
+  # EnvironmentFile=-/etc/sysconf/mysqld
   
   [Install]
   WantedBy=multi-user.target
