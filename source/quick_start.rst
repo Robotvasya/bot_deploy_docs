@@ -16,28 +16,57 @@
 Подготовка к запуску бота.
 --------------------------
 
-Бот будет запускаться от пользователя ``tgbot`` из папки ``/opt/my_bot``, а исходник например, лежит в ``~/bot_source``::
+Бот будет запускаться от пользователя ``tgbot`` из папки ``/opt/my_bot``, а исходник например, лежит в ``~/bot_source``:
+
+.. code-block:: bash
 
   adduser --system tgbot
-  mkdir /opt/my_bot
-  cp ~/bot_source/* /opt/my_bot
-  cd /opt/my_bot
-  python3.11 -m venv venv 
-  source venv/bin/activate
-  pip install -r requirements.txt
-  deactivate
-  chown -R tgbot /opt/my_bot
 
+.. code-block:: bash
+
+  mkdir /opt/my_bot
+
+.. code-block:: bash
+
+  cp ~/bot_source/* /opt/my_bot
+
+.. code-block:: bash
+
+  cd /opt/my_bot
+
+.. code-block:: bash
+
+  python3.11 -m venv venv 
+
+.. code-block:: bash
+
+  source venv/bin/activate
+
+.. code-block:: bash
+
+  pip install -r requirements.txt
+
+.. code-block:: bash
+
+  deactivate
+
+.. code-block:: bash
+
+  chown -R tgbot /opt/my_bot
 
 
 Запуск бота.
 ------------
 
-Создаем системный юнит::
+Создаем системный юнит:
+
+.. code-block:: bash
 
   cat > /etc/systemd/system/tgbot.service
 
-Вставляем::
+Вставляем:
+
+.. code-block:: bash
 
   [Unit]
   Description=Test echo Bot
@@ -56,11 +85,18 @@
   [Install]
   WantedBy=multi-user.target
 
-Обновляем systemd и ставим в автозагрузку::
+Обновляем systemd и ставим в автозагрузку:
+
+.. code-block:: bash
 
   systemctl daemon-reload
+
+.. code-block:: bash
+
   systemctl enable tgbot
 
-Запускаем::
+Запускаем:
+
+.. code-block:: bash
 
   systemctl start tgbot
