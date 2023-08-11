@@ -10,8 +10,10 @@
    :maxdepth: 3
    :caption: Оглавление:
 
+   quick_start
    deploy
    using_git
+   
 
 Таблицы и указатели
 ===================
