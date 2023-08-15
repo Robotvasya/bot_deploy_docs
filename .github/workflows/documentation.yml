@@ -1,0 +1,16 @@
+name: doc_build_workflow
+
+on: 
+  push:
+    branches:  [ main ]
+
+jobs:
+  build_docs:
+    runs-on: ubuntu_latest
+  steps:
+    - name:
+      uses:
+      with:
+      
+    - name:
+    
