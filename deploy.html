@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="ru" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Деплой бота на сервер. &mdash; документация Деплой бота на хостинг 0.1.0</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
+        <script src="_static/translations.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Алфавитный указатель" href="genindex.html" />
+    <link rel="search" title="Поиск" href="search.html" />
+    <link rel="next" title="Использование git и github.com для обновления бота" href="using_git.html" />
+    <link rel="prev" title="Быстрый старт." href="quick_start.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Деплой бота на хостинг
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Поиск в документации" aria-label="Поиск в документации" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Меню навигации">
+              <p class="caption" role="heading"><span class="caption-text">Оглавление:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quick_start.html">Быстрый старт.</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Деплой бота на сервер.</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#ssh">Соединение с сервером по протоколу SSH.</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">Данные для аутентификации:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">Инструменты:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">Подключение:</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">Копирование файлов проекта.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#python">Настройка окружения Python.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">Настройка бота как сервиса с автозапуском.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">Переменные окружения.</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#i-environment">Вариант I. Директива Environment.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ii-environmentfile">Вариант II. Директива EnvironmentFile (Рекомендуется к использованию).</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#iii-drop-in">Вариант III. Создание drop-in файла конфигурации (Необязательно для использования).</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#iv">Вариант IV. Временные переменные окружения (Необязательно для использования).</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">Работа с логами.</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="using_git.html">Использование git и github.com для обновления бота</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Меню навигации для мобильных устройств" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Деплой бота на хостинг</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Навигация по страницам">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Деплой бота на сервер.</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>Деплой бота на сервер.<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h1>
+<section id="ssh">
+<h2>Соединение с сервером по протоколу SSH.<a class="headerlink" href="#ssh" title="Permalink to this heading"></a></h2>
+<section id="id2">
+<h3>Данные для аутентификации:<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
+<p>Для подключения к серверу вам необходимо  иметь (получить)  следующие данные:</p>
+<ul class="simple">
+<li><p>логин,</p></li>
+<li><p>пароль,</p></li>
+<li><p>IP адрес сервера,</p></li>
+<li><p>порт подключения по протоколу SSH.</p></li>
+</ul>
+<p>Например, логин: root, пароль: my_password,  ip: 127.92.0.131, port: 22111.</p>
+</section>
+<section id="id3">
+<h3>Инструменты:<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
+<p>Для соединения с сервером и удаленной работы с ним нам потребуются следующие инструменты, в зависимости от вашей операционной системы:</p>
+<p><strong>Для Linux, MacOS:</strong></p>
+<ul class="simple">
+<li><p>Обычный встроенный  в систему терминал.</p></li>
+</ul>
+<p><strong>Для Windows любой удобный вариант:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">WinSCP</span></code> – клиент для работы по протоколу SSH и для передачи файлов с графическим интерфейсом. Ссылка для скачивания с официального сайта:  <a class="reference external" href="https://winscp.net/eng/download.php">https://winscp.net/eng/download.php</a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PuTTY</span></code> – клиент для работы по протоколу SSH и, опционально, консольная утилита <code class="docutils literal notranslate"><span class="pre">pSCP</span></code> для передачи файлов. Ссылка для скачивания с официального сайта: <a class="reference external" href="https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html">https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html</a> Выбираем раздел Alternative binary – это файлы приложений, не требующих установки в систему. Скачиваем нужной разрядности x32 или x64 putty.exe – это сам клиент, и pscp.exe для передачи файлов на сервер.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PowerShell</span></code> встроенный SSH-клиент c помошью команды <code class="docutils literal notranslate"><span class="pre">ssh</span></code> и команды <code class="docutils literal notranslate"><span class="pre">scp</span></code> для передачи файлов. Запускается с помощью <code class="docutils literal notranslate"><span class="pre">Win+R</span></code> команда <code class="docutils literal notranslate"><span class="pre">powershell</span></code>,  или в Проводнике <code class="docutils literal notranslate"><span class="pre">shift</span> <span class="pre">+</span> <span class="pre">контекстное</span> <span class="pre">меню</span></code> (правая клавиша мыши) «Открыть окно Powershell здесь»</p></li>
+</ul>
+</section>
+<section id="id4">
+<h3>Подключение:<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h3>
+<p>Открываем терминал Linux, MacOS или Windows PowerShell и в командной строке выполняем команду <code class="docutils literal notranslate"><span class="pre">ssh</span> <span class="pre">имя_пользователя&#64;IP_адрес</span> <span class="pre">-p</span> <span class="pre">номер_порта</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ssh</span> <span class="n">root</span><span class="o">@</span><span class="mf">127.92.0.131</span> <span class="o">-</span><span class="n">p</span> <span class="mi">22111</span>
+</pre></div>
+</div>
+<p>При первом подключении у вас запросят подтвердить обмен ключами:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>The authenticity of host &#39;127.92.0.131 (127.92.0.131)&#39; can&#39;t be established.
+ECDSA key fingerprint is SHA256:ABCDEasdfgAsDhgf+ffgIHKJHgLbvcxxcctvv6S3bvvY.
+Are you sure you want to continue connecting (yes/no/[fingerprint])?
+</pre></div>
+</div>
+<p>Необходимо ввести <code class="docutils literal notranslate"><span class="pre">yes</span></code>.</p>
+<p>Затем будет предложено ввести пароль:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">root</span><span class="o">@</span><span class="mf">127.92.0.131</span><span class="s1">&#39;s password:</span>
+</pre></div>
+</div>
+<p>Обратите внимание, что при вводе пароля знаки и их количество не отображаются в целях безопасности. Нужно ввести или вставить пароль, а затем нажать ввод.</p>
+<p>Появится приглашение ввода команд:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Welcome<span class="w"> </span>to<span class="w"> </span>Ubuntu<span class="w"> </span><span class="m">22</span>.04.1<span class="w"> </span>LTS<span class="w"> </span><span class="o">(</span>GNU/Linux<span class="w"> </span><span class="m">5</span>.4.0-146-generic<span class="w"> </span>x86_64<span class="o">)</span>
+*<span class="w"> </span>Documentation:<span class="w">  </span>https://help.ubuntu.com
+*<span class="w"> </span>Management:<span class="w">     </span>https://landscape.canonical.com
+*<span class="w"> </span>Support:<span class="w">        </span>https://ubuntu.com/advantage
+
+*<span class="w"> </span>Introducing<span class="w"> </span>Expanded<span class="w"> </span>Security<span class="w"> </span>Maintenance<span class="w"> </span><span class="k">for</span><span class="w"> </span>Applications.
+Receive<span class="w"> </span>updates<span class="w"> </span>to<span class="w"> </span>over<span class="w"> </span><span class="m">25</span>,000<span class="w"> </span>software<span class="w"> </span>packages<span class="w"> </span>with<span class="w"> </span>your
+Ubuntu<span class="w"> </span>Pro<span class="w"> </span>subscription.<span class="w"> </span>Free<span class="w"> </span><span class="k">for</span><span class="w"> </span>personal<span class="w"> </span>use.
+
+https://ubuntu.com/pro
+Last<span class="w"> </span>login:<span class="w"> </span>Tue<span class="w"> </span>Jun<span class="w"> </span><span class="m">20</span><span class="w"> </span><span class="m">12</span>:02:39<span class="w"> </span><span class="m">2023</span><span class="w"> </span>from<span class="w"> </span><span class="m">192</span>.168.8.7
+
+root@bot-111:~#
+</pre></div>
+</div>
+<p>При использовании <code class="docutils literal notranslate"><span class="pre">PuTTY</span></code> в разделе Session поле Host Name (or IP adress) вводится IP адрес и также указываем порт в поле Port.  И нажать снизу кнопку Open, для установления соединения.
+Логин и пароль нужно будет ввести после соединения с сервером.</p>
+<p>При использовании <code class="docutils literal notranslate"><span class="pre">WinSCP</span></code> нужно нажать на кнопку  Новое соединение.. (New connection..) и так же ввести все имеющиеся учетные данные. В целях безопасности, пароль желательно не сохранять в приложении, а вводить через менеджер паролей или вручную.</p>
+<p>Итак, если вы видите такую строку:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">root</span><span class="nd">@bot</span><span class="o">-</span><span class="mi">111</span><span class="p">:</span><span class="o">~</span><span class="c1">#</span>
+</pre></div>
+</div>
+<p>что означает <code class="docutils literal notranslate"><span class="pre">имя_пользователя&#64;имя_сервера:путь_к_папке#</span></code>, и вы успешно вошли в систему.</p>
+<p>Знак <code class="docutils literal notranslate"><span class="pre">#</span></code> в конце приглашения командной строки терминала означает, что вы суперпользователь root, а тильда <code class="docutils literal notranslate"><span class="pre">~</span></code> перед ним – что вы в домашней папке пользователя, в нашем случае root.</p>
+<div class="admonition attention">
+<p class="admonition-title">Внимание</p>
+<p>По соображениям безопасности бот не должен работать от суперпользователя, поэтому потребуется дополнительная настройка, о которой речь пойдет в 3 разделе.</p>
+</div>
+<p>Пока же, нам нужно подготовить и разложить по папкам файлы нашего бота.</p>
+</section>
+</section>
+<section id="id5">
+<h2>Копирование файлов проекта.<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h2>
+<p>Если для работы и соединения с сервером, вы используете WinSCP, то просто нужно в одном окне открыть соединение с сервером, и скопировать файлы в нужные папки.</p>
+<p>Если вы подключились через ssh, вам необходимо выполнить копирование с помощью команд в окне терминала.</p>
+<p>В ubuntu сторонние приложения по соглашению находятся в папке <code class="docutils literal notranslate"><span class="pre">/opt</span></code>. Поэтому файлы бота будут скопированы в эту папку.</p>
+<p>Для копирования нам потребуется утилита <code class="docutils literal notranslate"><span class="pre">scp</span></code>, которая есть в Linux, MacOS и Windows PowerShell, или <code class="docutils literal notranslate"><span class="pre">pscp.exe</span></code> из проекта Putty. В случае с Putty вам необходимо открыть приложение командной строки Windows <code class="docutils literal notranslate"><span class="pre">cmd.exe</span></code> через команду выполнить <code class="docutils literal notranslate"><span class="pre">Win</span> <span class="pre">+</span> <span class="pre">R</span></code>. В WinSCP, в свою очередь, копирование файлов доступно после подключения к серверу через графический интерфейс.</p>
+<p>Откроем новое окно терминала на локальном компьютере и перейдем в вышестоящую папку нашего проекта. Предположим, файлы нашего бота находятся на локальном компьютере в папке <code class="docutils literal notranslate"><span class="pre">c:\my_bot</span></code> или <code class="docutils literal notranslate"><span class="pre">/home/user/my_bot</span></code> (путь специально написал такой, чтоб не заморачиваться с длинной путей). Тогда нам нужно открыть терминал, и перейти  командой <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">c:\</span></code> или <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">~</span></code>.</p>
+<p>Копируем папку с локального компьютера на удаленный командой <code class="docutils literal notranslate"><span class="pre">scp</span></code> <code class="docutils literal notranslate"><span class="pre">-r``(рекурсивно,</span> <span class="pre">то</span> <span class="pre">есть</span> <span class="pre">все</span> <span class="pre">файлы)</span> <span class="pre">``-P</span></code> (SSH порт) <code class="docutils literal notranslate"><span class="pre">путь_к_папке_my_bot</span></code> <code class="docutils literal notranslate"><span class="pre">имя_пользователя&#64;IP_адрес_сервера</span></code> <code class="docutils literal notranslate"><span class="pre">:</span></code> <code class="docutils literal notranslate"><span class="pre">путь_к_папке_/opt</span></code></p>
+<p>Чтобы не было проблем с пробелами в локальном пути, его можно заключить в кавычки <code class="docutils literal notranslate"><span class="pre">&quot;</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">scp</span> <span class="o">-</span><span class="n">r</span> <span class="o">-</span><span class="n">P</span> <span class="mi">22111</span> <span class="s2">&quot;c:\my_bot&quot;</span> <span class="n">root</span><span class="o">@</span><span class="mf">127.92.0.131</span><span class="p">:</span><span class="o">/</span><span class="n">opt</span>
+</pre></div>
+</div>
+<p>Произойдет подключение к серверу. Нужно ввести пароль и файлы скопируются.</p>
+<p>Если пути поменять местами, то скопируются наоборот на локальный компьютер.</p>
+<p>Для удобства установим файловый менеджер, на пример <code class="docutils literal notranslate"><span class="pre">Midnight</span> <span class="pre">commander</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">apt</span> <span class="n">install</span> <span class="n">mc</span>
+</pre></div>
+</div>
+<p>И запустим его:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mc</span>
+</pre></div>
+</div>
+<p>Находясь в этом консольном файловом менеджере мы можем переключаться между окнами интерфейса и командной строкой клавишами <code class="docutils literal notranslate"><span class="pre">Ctrl</span> <span class="pre">+</span> <span class="pre">O</span></code>.</p>
+<p>Возвращаемся в терминал, где открыт Midnight Commander, и проверяем что все прошло ок.</p>
+</section>
+<section id="python">
+<h2>Настройка окружения Python.<a class="headerlink" href="#python" title="Permalink to this heading"></a></h2>
+<p>Для того, чтобы приложение бота заработало и не было конфликта с библиотеками, которые уже установлены в системе, создадим новое чистое виртуальное окружение.</p>
+<p>Перейдем в папку /opt/my_bot и создадим чистое окружение:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">my_bot</span>
+<span class="n">python3</span> <span class="o">-</span><span class="n">m</span> <span class="n">venv</span> <span class="n">venv</span>
+</pre></div>
+</div>
+<p>Создастся папка venv, в которой будут находиться интерпретатор, pip и библиотеки нашего проекта.</p>
+<p>Для установки библиотек нам необходимо активировать виртуальное окружение, обновить менеджер пакетов pip и установить все из файла зависимостей:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">activate</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">upgrade</span> <span class="n">pip</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">r</span> <span class="n">requirements</span><span class="o">.</span><span class="n">txt</span>
+</pre></div>
+</div>
+<p>Когда все работы по настройке и проверке скрипта завершены, виртуальное окружение нужно деактивировать:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">deactivate</span>
+</pre></div>
+</div>
+</section>
+<section id="id6">
+<h2>Настройка бота как сервиса с автозапуском.<a class="headerlink" href="#id6" title="Permalink to this heading"></a></h2>
+<p>После того, как мы установили все библиотеки и проверили работоспособность бота, нам необходимо сделать автоматический запуск бота и перезапуск в случае ошибок, внезапных аварий и пр.</p>
+<p>В целях безопасности, бот будет работать от пользователя с минимальными привилегиями. Создадим пользователя tgbot без возможности sudo и без прав логиниться в систему:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">adduser</span> <span class="o">--</span><span class="n">system</span> <span class="n">tgbot</span>
+</pre></div>
+</div>
+<p>Добавим права на файлы бота для нового пользователя:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">chown</span> <span class="o">-</span><span class="n">R</span> <span class="n">tgbot</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">my_bot</span>
+</pre></div>
+</div>
+<p>Отвечать за запуск и перезапуск бота, а также ротацию логов будет <em>systemd</em>.</p>
+<p>Для этого нам необходимо создать новый юнит — службу для управления нашим ботом.</p>
+<p>Создадим в нашем проекте папку systemd и файл tgbot.service в ней:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="o">&gt;</span>  <span class="n">tgbot</span><span class="o">.</span><span class="n">service</span>
+</pre></div>
+</div>
+<p>Вставляем текст файла, приведенный ниже:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mkdir</span> <span class="n">systemd</span>
+<span class="n">cd</span> <span class="n">systemd</span><span class="o">/</span>
+<span class="n">touch</span> <span class="n">tgbot</span><span class="o">.</span><span class="n">service</span>
+</pre></div>
+</div>
+<p>Добавим в файл <code class="docutils literal notranslate"><span class="pre">tgbot.service</span></code> следующее содержимое:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Unit</span><span class="p">]</span>
+<span class="n">Description</span><span class="o">=</span><span class="n">Test</span> <span class="n">echo</span> <span class="n">Bot</span>
+<span class="n">After</span><span class="o">=</span><span class="n">syslog</span><span class="o">.</span><span class="n">target</span>
+<span class="n">After</span><span class="o">=</span><span class="n">network</span><span class="o">.</span><span class="n">target</span>
+
+<span class="p">[</span><span class="n">Service</span><span class="p">]</span>
+<span class="n">User</span><span class="o">=</span><span class="n">tgbot</span>
+<span class="n">Type</span><span class="o">=</span><span class="n">simple</span>
+<span class="n">WorkingDirectory</span><span class="o">=/</span><span class="n">opt</span><span class="o">/</span><span class="n">my_bot</span>
+<span class="n">ExecStart</span><span class="o">=/</span><span class="n">opt</span><span class="o">/</span><span class="n">my_bot</span><span class="o">/</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">python</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">my_bot</span><span class="o">/</span><span class="n">cli</span><span class="o">.</span><span class="n">py</span>
+<span class="n">Restart</span><span class="o">=</span><span class="n">on</span><span class="o">-</span><span class="n">failure</span>
+<span class="n">RestartSec</span><span class="o">=</span><span class="mi">5</span>
+<span class="n">StartLimitBurst</span><span class="o">=</span><span class="mi">5</span>
+
+<span class="c1"># Переменные окружения. Для более подробной информации см. раздел 5 &quot;Переменные окружения&quot; настоящего руководства.</span>
+<span class="c1"># (измените переменные перед вставкой на свои или удалите эти строки, если не используете).</span>
+
+<span class="c1"># В виде ключ = значение:</span>
+<span class="c1"># Environment=&quot;VAR1=word1 word2&quot; VAR2=word3</span>
+<span class="c1"># Environment=Var3=word4</span>
+<span class="c1"># Из файла</span>
+<span class="c1"># EnvironmentFile=-/etc/sysconf/mysqld</span>
+
+<span class="p">[</span><span class="n">Install</span><span class="p">]</span>
+<span class="n">WantedBy</span><span class="o">=</span><span class="n">multi</span><span class="o">-</span><span class="n">user</span><span class="o">.</span><span class="n">target</span>
+</pre></div>
+</div>
+<p>Не забываем в конце добавить пустую строку и нажимаем <code class="docutils literal notranslate"><span class="pre">Ctrl</span> <span class="pre">+</span> <span class="pre">D</span></code>.</p>
+<p>В Midnight Commander редактирование файла <code class="docutils literal notranslate"><span class="pre">F4</span></code> (при первом вызове выберите редактор mcedit, нажав на нужную цифру в окне выбора).</p>
+<p>Обратим внимание на параметры в файле <code class="docutils literal notranslate"><span class="pre">tgbot.service</span></code>:</p>
+<p><code class="docutils literal notranslate"><span class="pre">Description=Test</span> <span class="pre">echo</span> <span class="pre">Bot</span></code> – это описание нашего бота.</p>
+<p><code class="docutils literal notranslate"><span class="pre">After=network.target</span></code> – это указание, что бот должен быть запущен только после того, как стартует сервис сети. Можно указывать еще, что после старта базы данных:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">After</span><span class="o">=</span><span class="n">mysql</span><span class="o">.</span><span class="n">service</span>
+<span class="n">Requires</span><span class="o">=</span><span class="n">mysql</span><span class="o">.</span><span class="n">service</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">User=tgbot</span></code> – указываем от имени какого пользователя запускать сервис</p>
+<p><code class="docutils literal notranslate"><span class="pre">WorkingDirectory=/opt/my_bot/</span></code> – рабочая директория проекта.</p>
+<p><code class="docutils literal notranslate"><span class="pre">ExecStart=/opt/my_bot/venv/bin/python</span> <span class="pre">/opt/my_bot/cli.py</span></code> — здесь указываем путь к интерпретатору в нашем виртуальном окружении и через пробел путь к основному файлу бота. У меня это cli.py.</p>
+<p>Эти параметры определяют как будет происходить перезапуск:</p>
+<p><code class="docutils literal notranslate"><span class="pre">Restart=always</span></code> – Перезапускать всегда. Может быть значение on-failure, как в моем случае.</p>
+<p><code class="docutils literal notranslate"><span class="pre">RestartSec=5</span></code> – Запустить через 5 секунд.</p>
+<p><code class="docutils literal notranslate"><span class="pre">StartLimitBurst=5</span></code> –  Запустить 5 попыток.</p>
+<p>Получившийся файл нам необходимо скопировать в папку <code class="docutils literal notranslate"><span class="pre">/etc/systemd/system/</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cp</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">my_bot</span><span class="o">/</span><span class="n">systemd</span><span class="o">/</span><span class="n">tgbot</span><span class="o">.</span><span class="n">service</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">systemd</span><span class="o">/</span><span class="n">system</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>Обновляем конфигурацию systemd, чтобы он увидел новый юнит нашего сервиса. Эта команда будет нужна после каждой правки файла <code class="docutils literal notranslate"><span class="pre">tgbot.service</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">daemon</span><span class="o">-</span><span class="n">reload</span>
+</pre></div>
+</div>
+<p>Запускаем сервис нашего бота:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">start</span> <span class="n">tgbot</span>
+</pre></div>
+</div>
+<p>Проверяем, что сервис запущен и нет ошибок.</p>
+<blockquote>
+<div><p>systemctl status tgbot</p>
+</div></blockquote>
+<p>Если  все прошло удачно, то выведется, что статус активен, бот запущен:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>root@bot-111:/opt/my_bot# systemctl status tgbot
+● tgbot.service - Test echo Bot
+     Loaded: loaded (/etc/systemd/system/tgbot.service; enabled; vendor preset: enabled)
+    Drop-In: /run/systemd/system/service.d
+             └─zzz-lxc-service.conf
+     Active: active (running) since Wed 2023-06-21 11:13:16 UTC; 2h 21min ago
+   Main PID: 2955 (python)
+      Tasks: 2 (limit: 309168)
+     Memory: 35.0M
+     CGroup: /system.slice/tgbot.service
+             └─2955 /opt/my_bot/venv/bin/python /opt/my_bot/cli.py
+
+Jun 21 11:13:16 bot-111 systemd[1]: Started Test echo Bot.
+</pre></div>
+</div>
+<p>Проверяем, что процесс запущен от нужного пользователя tgbot. Для этого берем из вывода выше номер процесса <cite>Main PID: 2955 (python)</cite> и подставляем в команду:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ps</span> <span class="o">-</span><span class="n">u</span> <span class="o">-</span><span class="n">p</span> <span class="mi">2955</span>
+</pre></div>
+</div>
+<p>и видим:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>USER         PID  %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+tgbot        2955  0.0 10.2 137256 51344 ?        Ssl  Jun21   0:14 /opt/my_bot/venv/bin/python /opt/my_bot/cli.py
+</pre></div>
+</div>
+<p>Показано, что процесс запущен от нашего пользователя tgbot.</p>
+<p>Если ошибки есть, то они будут отображены примерно так:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>systemctl status tgbot
+● tgbot.service - Test echo Bot
+     Loaded: loaded (/etc/systemd/system/tgbot.service; enabled; vendor preset: enabled)
+    Drop-In: /run/systemd/system/service.d
+             └─zzz-lxc-service.conf
+     Active: activating (auto-restart) (Result: exit-code) since Wed 2023-06-21 10:47:29 UTC; 1s ago
+    Process: 2730 ExecStart=/opt/my_bot/venv/bin/python /opt/my_bot/cli.py (code=exited, status=200/CHDIR)
+   Main PID: 2730 (code=exited, status=200/CHDIR)
+
+Jun 21 10:47:29 bot-111 systemd[2730]: tgbot.service: Failed at step CHDIR spawning /opt/bbt/venv/bin/python: No such file or directory
+Jun 21 10:47:29 bot-111 systemd[1]: tgbot.service: Main process exited, code=exited, status=200/CHDIR
+Jun 21 10:47:29 bot-111 systemd[1]: tgbot.service: Failed with result &#39;exit-code&#39;.
+</pre></div>
+</div>
+<p>Ошибка произошла, поскольку я ошибся в строках <code class="docutils literal notranslate"><span class="pre">WorkingDirectory=/opt/my_bot/</span></code> и <code class="docutils literal notranslate"><span class="pre">ExecStart=/opt/my_bot/venv/bin/python</span> <span class="pre">/opt/my_bot/cli.py</span></code>.</p>
+<p>Проверьте пути!</p>
+<p>После того, как вы все настроили, бот работает и ошибок нет — сохраните рабочую версию конфигурации tgbot.service. Не забывайте после правок настроек сервиса делать релоад systemd: <code class="docutils literal notranslate"><span class="pre">systemctl</span> <span class="pre">daemon-reload</span></code>:</p>
+<p>Устанавливаем бота в автозапуск:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">enable</span> <span class="n">tgbot</span>
+</pre></div>
+</div>
+<p>При необходимости останавливаем бота:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">stop</span> <span class="n">tgbot</span>
+</pre></div>
+</div>
+<p>Команда для удаления из автозагрузки:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">disable</span> <span class="n">tgbot</span>
+</pre></div>
+</div>
+</section>
+<section id="id7">
+<h2>Переменные окружения.<a class="headerlink" href="#id7" title="Permalink to this heading"></a></h2>
+<p>Поскольку данное руководство предполагает разворачивание приложения через создание юнита systemd и запуск как сервиса, то имеется несколько вариантов работы с переменными окружения. Нужно обратить внимание, что пользовательский процесс systemd не наследует какую-либо из переменных окружения, установленных в .bashrc или других. Более того, мы изначально создали системного пользователя, у которого нет домашней папки, профиля, пароля и прочего, для ограничения прав в системе.</p>
+<section id="i-environment">
+<h3>Вариант I. Директива Environment.<a class="headerlink" href="#i-environment" title="Permalink to this heading"></a></h3>
+<p>В systemd есть директива Environment, которая устанавливает переменные окружения для выполняемых процессов. Она принимает список назначений переменных, разделенных пробелами. Этот параметр может быть указан более одного раза, в этом случае будут установлены все перечисленные переменные.</p>
+<p>Если одна и та же переменная задана дважды, более поздняя установка отменяет более раннюю. Если этой опции присвоена пустая строка, список переменных окружения обнуляется, все предыдущие назначения не имеют эффекта.</p>
+<p>В файле tgbot.service в разделе [Service] добавляем или несколько директив <code class="docutils literal notranslate"><span class="pre">Environment=Key=value</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">...</span>
+<span class="p">[</span><span class="n">Service</span><span class="p">]</span>
+<span class="o">...</span>
+<span class="n">Environment</span><span class="o">=</span><span class="n">BOT_CA_FILE</span><span class="o">=/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">CA</span><span class="o">.</span><span class="n">pem</span>
+<span class="n">Environment</span><span class="o">=</span><span class="n">BOT_CERT_FILE</span><span class="o">=/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">server</span><span class="o">.</span><span class="n">crt</span>
+<span class="n">Environment</span><span class="o">=</span><span class="n">BOT_KEY_FILE</span><span class="o">=/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">server</span><span class="o">.</span><span class="n">key</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+<p>Несколько переменных можно добавлять через пробел (если в значении имеется пробел, то значение нужно заключить в кавычки, так как символ пробела является разделителем): <code class="docutils literal notranslate"><span class="pre">Environment=Key=value</span> <span class="pre">Key2=value2</span> <span class="pre">Key3=&quot;value</span> <span class="pre">space</span> <span class="pre">3&quot;</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">...</span>
+<span class="p">[</span><span class="n">Service</span><span class="p">]</span>
+<span class="o">...</span>
+<span class="n">Environment</span><span class="o">=</span><span class="n">BOT_CA_FILE</span><span class="o">=/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">CA</span><span class="o">.</span><span class="n">pem</span> <span class="n">BOT_CERT_FILE</span><span class="o">=/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">server</span><span class="o">.</span><span class="n">crt</span> <span class="n">BOT_KEY_FILE</span><span class="o">=/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">newserver</span><span class="o">.</span><span class="n">key</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+</section>
+<section id="ii-environmentfile">
+<h3>Вариант II. Директива EnvironmentFile (Рекомендуется к использованию).<a class="headerlink" href="#ii-environmentfile" title="Permalink to this heading"></a></h3>
+<p>EnvironmentFile аналогична директиве Environment, но считывает сразу все переменные окружения из текстового файла, что намного удобнее. Текстовый файл должен содержать назначения переменных, разделенных новыми строками.</p>
+<p>Создадим файл переменных <code class="docutils literal notranslate"><span class="pre">tgbot_envlist</span></code> такого содержания:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">IPV4_ANCHOR_0</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">X</span>
+<span class="n">IPV4_PRIVATE_0</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">X</span>
+<span class="n">HOSTNAME</span><span class="o">=</span><span class="n">test</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span>
+</pre></div>
+</div>
+<p>В файле <code class="docutils literal notranslate"><span class="pre">tgbot.service</span></code> в разделе <strong>[Service]</strong> добавляем <code class="docutils literal notranslate"><span class="pre">Environment=path_to_file</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">...</span>
+<span class="p">[</span><span class="n">Service</span><span class="p">]</span>
+<span class="o">...</span>
+<span class="n">EnvironmentFile</span><span class="o">=/</span><span class="n">opt</span><span class="o">/</span><span class="n">my_bot</span><span class="o">/</span><span class="n">env_dir</span><span class="o">/</span><span class="n">tgbot_envlist</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+</section>
+<section id="iii-drop-in">
+<h3>Вариант III. Создание drop-in файла конфигурации (Необязательно для использования).<a class="headerlink" href="#iii-drop-in" title="Permalink to this heading"></a></h3>
+<p>Когда у вас уже создан файл вашего юнита tgbot.service, мы можем создать drop-in файл. Это файл конфигурации, в котором будут находиться дополнительные настройки или настройки, которые заменяют значения основного файла юнита.</p>
+<p>Выполняем команду <code class="docutils literal notranslate"><span class="pre">systemctl</span> <span class="pre">edit</span> <span class="pre">tgbot.service</span></code>. Откроется редактор, который будет содержать закомментированное содержимое исходного файла юнита, и можно указывать только те секции и только те значения, которые мы хотим добавить или заменить.</p>
+<p>Например:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">edit</span> <span class="n">tgbot</span><span class="o">.</span><span class="n">service</span>
+</pre></div>
+</div>
+<p>Откроется окно редактирования файла <code class="docutils literal notranslate"><span class="pre">override.conf</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">### Editing /etc/systemd/system/tgbot.service.d/override.conf</span>
+<span class="c1">### Anything between here and the comment below will become the new contents of the file</span>
+
+<span class="c1">### Editing /etc/systemd/system/tgbot.service.d/override.conf</span>
+<span class="c1">### Anything between here and the comment below will become the new contents of the file</span>
+
+<span class="c1">### Lines below this comment will be discarded</span>
+
+<span class="c1">### /etc/systemd/system/tgbot.service</span>
+<span class="c1"># [Unit]</span>
+<span class="c1"># Description=Test echo Bot</span>
+<span class="c1"># After=network.target</span>
+<span class="c1">#</span>
+<span class="c1"># [Service]</span>
+<span class="c1"># User=tgbot2</span>
+<span class="c1"># Group=tgbot</span>
+<span class="c1"># Type=simple</span>
+<span class="c1"># WorkingDirectory=/opt/bbt</span>
+<span class="c1"># ExecStart=/opt/bbt/venv/bin/python /opt/bbt/cli.py</span>
+<span class="c1"># Restart=on-failure</span>
+<span class="c1"># RestartSec=5</span>
+<span class="c1"># StartLimitBurst=5</span>
+<span class="c1">#</span>
+<span class="c1"># [Install]</span>
+<span class="c1"># WantedBy=multi-user.target</span>
+</pre></div>
+</div>
+<p>Добавим внизу строки:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Service</span><span class="p">]</span>
+<span class="n">Environment</span><span class="o">=</span><span class="n">TEST_ENV</span><span class="o">=</span><span class="s2">&quot;ABCDEF&quot;</span>
+</pre></div>
+</div>
+<p>и сохраним файл под именем local.conf. В папке <code class="docutils literal notranslate"><span class="pre">/etc/systemd/system</span></code> будет создана папка с именем вашего сервиса <code class="docutils literal notranslate"><span class="pre">tgbot.service.d</span></code>. Внутри будет создан файл <code class="docutils literal notranslate"><span class="pre">local.conf</span></code>.</p>
+<p>Теперь после перезагрузки <code class="docutils literal notranslate"><span class="pre">systemd</span> <span class="pre">daemon-reload</span></code> нам становится доступна переменная окружения <code class="docutils literal notranslate"><span class="pre">TEST_ENV</span></code> со значением <code class="docutils literal notranslate"><span class="pre">ABCDEF</span></code>. И мы ее можем импортировать в нашем коде бота так:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">NEW_ENV_VAR</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;TEST_ENV&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">NEW_ENV_VAR</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Drop-in файлы используются чаще всего для хранения настроек баз данных.</p>
+<p>После всех правок перезагружаем systemd и перезагружаем сервис бота:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">daemon</span><span class="o">-</span><span class="n">reload</span>
+<span class="n">systemctl</span> <span class="n">restart</span> <span class="n">tgbot</span><span class="o">.</span><span class="n">service</span>
+</pre></div>
+</div>
+</section>
+<section id="iv">
+<h3>Вариант IV. Временные переменные окружения (Необязательно для использования).<a class="headerlink" href="#iv" title="Permalink to this heading"></a></h3>
+<p>Для временного изменения используйте команду <code class="docutils literal notranslate"><span class="pre">systemctl</span> <span class="pre">set-environment</span></code>. Применяется ко всем пользовательским службам, созданным после установки переменных окружения, но не к службам, которые уже были запущены. Данные значения НЕ заменяют значения файла  <code class="docutils literal notranslate"><span class="pre">tgbot.service</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="nb">set</span><span class="o">-</span><span class="n">environment</span> <span class="n">VAR1</span><span class="o">=</span><span class="n">value1</span> <span class="n">VAR2</span><span class="o">=</span><span class="n">value2</span>
+<span class="n">systemctl</span> <span class="n">restart</span> <span class="n">tgbot</span><span class="o">.</span><span class="n">service</span>
+</pre></div>
+</div>
+<p>Для удаления временной переменной используйте команду <code class="docutils literal notranslate"><span class="pre">systemctl</span> <span class="pre">unset-environment</span> <span class="pre">VARIABLE</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">systemctl</span> <span class="n">unset</span><span class="o">-</span><span class="n">environment</span> <span class="n">VAR1</span> <span class="n">VAR2</span>
+<span class="n">systemctl</span> <span class="n">restart</span> <span class="n">tgbot</span><span class="o">.</span><span class="n">service</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="id8">
+<h2>Работа с логами.<a class="headerlink" href="#id8" title="Permalink to this heading"></a></h2>
+<p>После того, как бот запущен, или при запуске возникли ошибки, нам необходимо посмотреть логи нашего приложения. Для этого используется команда <code class="docutils literal notranslate"><span class="pre">journalctl</span></code>. Эта команда  выведет все записи из всех журналов, включая ошибки и предупреждения, начиная с того момента, когда система начала загружаться. Старые записи событий будут наверху, более новые — внизу, вы можете использовать <code class="docutils literal notranslate"><span class="pre">PageUp</span></code> и <code class="docutils literal notranslate"><span class="pre">PageDown</span></code> чтобы перемещаться по списку, <code class="docutils literal notranslate"><span class="pre">Enter</span></code> — чтобы пролистывать журнал построчно и <code class="docutils literal notranslate"><span class="pre">q</span></code> — чтобы выйти. Обычно объем логов огромный и нам потребуется их отфильтровать, чтобы найти нужное.</p>
+<p>Команда <code class="docutils literal notranslate"><span class="pre">journalctl</span> <span class="pre">-u</span> <span class="pre">название_сервиса</span></code> выведет все логи сервиса, в нашем случае tgbot.service:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">root</span><span class="nd">@bot</span><span class="o">-</span><span class="mi">111</span><span class="p">:</span><span class="o">/</span><span class="n">opt</span><span class="c1"># journalctl -u tgbot</span>
+</pre></div>
+</div>
+<p>Будет выведены примерно такого вида сообщения:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">...</span>
+<span class="n">Jun</span> <span class="mi">18</span> <span class="mi">19</span><span class="p">:</span><span class="mi">07</span><span class="p">:</span><span class="mi">43</span> <span class="n">bot</span><span class="o">-</span><span class="mi">103</span> <span class="n">systemd</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">Started</span> <span class="n">Test</span> <span class="n">echo</span> <span class="n">Bot</span><span class="o">.</span>
+<span class="n">Jun</span> <span class="mi">18</span> <span class="mi">19</span><span class="p">:</span><span class="mi">07</span><span class="p">:</span><span class="mi">45</span> <span class="n">bot</span><span class="o">-</span><span class="mi">103</span> <span class="n">python</span><span class="p">[</span><span class="mi">119</span><span class="p">]:</span> <span class="n">INFO</span><span class="p">:</span><span class="n">aiogram</span><span class="o">.</span><span class="n">dispatcher</span><span class="p">:</span><span class="n">Start</span> <span class="n">polling</span>
+<span class="n">Jun</span> <span class="mi">18</span> <span class="mi">19</span><span class="p">:</span><span class="mi">07</span><span class="p">:</span><span class="mi">45</span> <span class="n">bot</span><span class="o">-</span><span class="mi">103</span> <span class="n">python</span><span class="p">[</span><span class="mi">119</span><span class="p">]:</span> <span class="n">INFO</span><span class="p">:</span><span class="n">aiogram</span><span class="o">.</span><span class="n">dispatcher</span><span class="p">:</span><span class="n">Run</span> <span class="n">polling</span> <span class="k">for</span> <span class="n">bot</span> <span class="nd">@testhost_echobot</span> <span class="nb">id</span><span class="o">=</span><span class="mi">00000000000</span> <span class="o">-</span> <span class="s1">&#39;tes&gt;</span>
+<span class="n">Jun</span> <span class="mi">18</span> <span class="mi">19</span><span class="p">:</span><span class="mi">07</span><span class="p">:</span><span class="mi">45</span> <span class="n">bot</span><span class="o">-</span><span class="mi">103</span> <span class="n">python</span><span class="p">[</span><span class="mi">119</span><span class="p">]:</span> <span class="n">INFO</span><span class="p">:</span><span class="n">aiogram</span><span class="o">.</span><span class="n">event</span><span class="p">:</span><span class="n">Update</span> <span class="nb">id</span><span class="o">=</span><span class="mi">000000000</span> <span class="ow">is</span> <span class="n">handled</span><span class="o">.</span> <span class="n">Duration</span> <span class="mi">194</span> <span class="n">ms</span> <span class="n">by</span> <span class="n">bot</span> <span class="nb">id</span><span class="o">=</span><span class="mi">00159</span><span class="o">&gt;</span>
+<span class="n">Jun</span> <span class="mi">18</span> <span class="mi">19</span><span class="p">:</span><span class="mi">07</span><span class="p">:</span><span class="mi">51</span> <span class="n">bot</span><span class="o">-</span><span class="mi">103</span> <span class="n">python</span><span class="p">[</span><span class="mi">119</span><span class="p">]:</span> <span class="n">INFO</span><span class="p">:</span><span class="n">aiogram</span><span class="o">.</span><span class="n">event</span><span class="p">:</span><span class="n">Update</span> <span class="nb">id</span><span class="o">=</span><span class="mi">000000000</span> <span class="ow">is</span> <span class="n">handled</span><span class="o">.</span> <span class="n">Duration</span> <span class="mi">78</span> <span class="n">ms</span> <span class="n">by</span> <span class="n">bot</span> <span class="nb">id</span><span class="o">=</span><span class="mi">001599</span><span class="o">&gt;</span>
+<span class="n">Jun</span> <span class="mi">18</span> <span class="mi">19</span><span class="p">:</span><span class="mi">09</span><span class="p">:</span><span class="mi">38</span> <span class="n">bot</span><span class="o">-</span><span class="mi">103</span> <span class="n">python</span><span class="p">[</span><span class="mi">119</span><span class="p">]:</span> <span class="n">INFO</span><span class="p">:</span><span class="n">aiogram</span><span class="o">.</span><span class="n">event</span><span class="p">:</span><span class="n">Update</span> <span class="nb">id</span><span class="o">=</span><span class="mi">000000000</span> <span class="ow">is</span> <span class="n">handled</span><span class="o">.</span> <span class="n">Duration</span> <span class="mi">205</span> <span class="n">ms</span> <span class="n">by</span> <span class="n">bot</span> <span class="nb">id</span><span class="o">=</span><span class="mi">00159</span><span class="o">&gt;</span>
+<span class="n">Jun</span> <span class="mi">18</span> <span class="mi">19</span><span class="p">:</span><span class="mi">09</span><span class="p">:</span><span class="mi">58</span> <span class="n">bot</span><span class="o">-</span><span class="mi">103</span> <span class="n">python</span><span class="p">[</span><span class="mi">119</span><span class="p">]:</span> <span class="n">INFO</span><span class="p">:</span><span class="n">aiogram</span><span class="o">.</span><span class="n">event</span><span class="p">:</span><span class="n">Update</span> <span class="nb">id</span><span class="o">=</span><span class="mi">000000000</span> <span class="ow">is</span> <span class="n">handled</span><span class="o">.</span> <span class="n">Duration</span> <span class="mi">242</span> <span class="n">ms</span> <span class="n">by</span> <span class="n">bot</span> <span class="nb">id</span><span class="o">=</span><span class="mi">00159</span><span class="o">&gt;</span>
+<span class="n">Jun</span> <span class="mi">18</span> <span class="mi">19</span><span class="p">:</span><span class="mi">11</span><span class="p">:</span><span class="mi">21</span> <span class="n">bot</span><span class="o">-</span><span class="mi">103</span> <span class="n">systemd</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">Stopping</span> <span class="n">Test</span> <span class="n">echo</span> <span class="n">Bot</span><span class="o">...</span>
+<span class="n">Jun</span> <span class="mi">18</span> <span class="mi">19</span><span class="p">:</span><span class="mi">11</span><span class="p">:</span><span class="mi">21</span> <span class="n">bot</span><span class="o">-</span><span class="mi">103</span> <span class="n">python</span><span class="p">[</span><span class="mi">119</span><span class="p">]:</span> <span class="n">WARNING</span><span class="p">:</span><span class="n">aiogram</span><span class="o">.</span><span class="n">dispatcher</span><span class="p">:</span><span class="n">Received</span> <span class="n">SIGTERM</span> <span class="n">signal</span>
+<span class="n">Jun</span> <span class="mi">18</span> <span class="mi">19</span><span class="p">:</span><span class="mi">11</span><span class="p">:</span><span class="mi">21</span> <span class="n">bot</span><span class="o">-</span><span class="mi">103</span> <span class="n">python</span><span class="p">[</span><span class="mi">119</span><span class="p">]:</span> <span class="n">INFO</span><span class="p">:</span><span class="n">aiogram</span><span class="o">.</span><span class="n">dispatcher</span><span class="p">:</span><span class="n">Polling</span> <span class="n">stopped</span> <span class="k">for</span> <span class="n">bot</span> <span class="nd">@testhost_echobot</span> <span class="nb">id</span><span class="o">=</span><span class="mi">0015000024</span> <span class="o">-</span> <span class="o">&gt;</span>
+<span class="n">Jun</span> <span class="mi">18</span> <span class="mi">19</span><span class="p">:</span><span class="mi">11</span><span class="p">:</span><span class="mi">21</span> <span class="n">bot</span><span class="o">-</span><span class="mi">103</span> <span class="n">python</span><span class="p">[</span><span class="mi">119</span><span class="p">]:</span> <span class="n">INFO</span><span class="p">:</span><span class="n">aiogram</span><span class="o">.</span><span class="n">dispatcher</span><span class="p">:</span><span class="n">Polling</span> <span class="n">stopped</span>
+<span class="n">Jun</span> <span class="mi">18</span> <span class="mi">19</span><span class="p">:</span><span class="mi">11</span><span class="p">:</span><span class="mi">21</span> <span class="n">bot</span><span class="o">-</span><span class="mi">103</span> <span class="n">systemd</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">tgbot</span><span class="o">.</span><span class="n">service</span><span class="p">:</span> <span class="n">Deactivated</span> <span class="n">successfully</span><span class="o">.</span>
+<span class="n">Jun</span> <span class="mi">18</span> <span class="mi">19</span><span class="p">:</span><span class="mi">11</span><span class="p">:</span><span class="mi">21</span> <span class="n">bot</span><span class="o">-</span><span class="mi">103</span> <span class="n">systemd</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">Stopped</span> <span class="n">Test</span> <span class="n">echo</span> <span class="n">Bot</span><span class="o">.</span>
+<span class="n">Jun</span> <span class="mi">18</span> <span class="mi">19</span><span class="p">:</span><span class="mi">11</span><span class="p">:</span><span class="mi">21</span> <span class="n">bot</span><span class="o">-</span><span class="mi">103</span> <span class="n">systemd</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="n">Started</span> <span class="n">Test</span> <span class="n">echo</span> <span class="n">Bot</span><span class="o">.</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+<p>Journalctl позволяет использовать такие служебные слова как “yesterday” (вчера), “today” (сегодня), “tomorrow” (завтра), или “now” (сейчас).</p>
+<p>Поэтому мы можем использовать опции <code class="docutils literal notranslate"><span class="pre">--since</span></code> (с начала какого периода выводить журнал), <code class="docutils literal notranslate"><span class="pre">--until</span></code> (по какой период не включительно) с использованием этих служебных слов, либо даты и времени.</p>
+<p>С определенной даты и времени: <code class="docutils literal notranslate"><span class="pre">journalctl</span> <span class="pre">--since</span> <span class="pre">&quot;2023-06-18</span> <span class="pre">19:00:00&quot;</span></code></p>
+<p>С определенной даты и по определенные дату и время: <code class="docutils literal notranslate"><span class="pre">journalctl</span> <span class="pre">--since</span> <span class="pre">&quot;2023-06-18&quot;</span> <span class="pre">--until</span> <span class="pre">&quot;2023-06-19</span> <span class="pre">10:00:00&quot;</span></code></p>
+<p>Со вчерашнего дня: <code class="docutils literal notranslate"><span class="pre">journalctl</span> <span class="pre">--since</span> <span class="pre">yesterday</span></code></p>
+<p>Выведем журнал нашего бота за день:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">journalctl</span> <span class="o">-</span><span class="n">u</span> <span class="n">tgbot</span> <span class="o">--</span><span class="n">since</span> <span class="s2">&quot;2023-06-18&quot;</span> <span class="o">--</span><span class="n">until</span> <span class="s2">&quot;2023-06-19&quot;</span>
+</pre></div>
+</div>
+<p>Система записывает события с различными уровнями важности, какие-то события могут быть предупреждением, которое можно проигнорировать, какие-то могут быть критическими ошибками.</p>
+<p>Для уровней важности, приняты следующие обозначения:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">0</span><span class="p">:</span> <span class="n">emergency</span> <span class="p">(</span><span class="n">неработоспособность</span> <span class="n">системы</span><span class="p">)</span>
+<span class="mi">1</span><span class="p">:</span> <span class="n">alerts</span> <span class="p">(</span><span class="n">предупреждения</span><span class="p">,</span> <span class="n">требующие</span> <span class="n">немедленного</span> <span class="n">вмешательства</span><span class="p">)</span>
+<span class="mi">2</span><span class="p">:</span> <span class="n">critical</span> <span class="p">(</span><span class="n">критическое</span> <span class="n">состояние</span><span class="p">)</span>
+<span class="mi">3</span><span class="p">:</span> <span class="n">errors</span> <span class="p">(</span><span class="n">ошибки</span><span class="p">)</span>
+<span class="mi">4</span><span class="p">:</span> <span class="n">warning</span> <span class="p">(</span><span class="n">предупреждения</span><span class="p">)</span>
+<span class="mi">5</span><span class="p">:</span> <span class="n">notice</span> <span class="p">(</span><span class="n">уведомления</span><span class="p">)</span>
+<span class="mi">6</span><span class="p">:</span> <span class="n">info</span> <span class="p">(</span><span class="n">информационные</span> <span class="n">сообщения</span><span class="p">)</span>
+<span class="mi">7</span><span class="p">:</span> <span class="n">debug</span> <span class="p">(</span><span class="n">отладочные</span> <span class="n">сообщения</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Если мы хотим просмотреть только ошибки нашего бота, введем команду с указанием кода важности:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">journalctl</span> <span class="o">-</span><span class="n">u</span> <span class="n">tgbot</span> <span class="o">-</span><span class="n">p</span> <span class="mi">3</span>
+</pre></div>
+</div>
+<p>Отобразятся сообщения с уровнем важности 3 и до 0.</p>
+<p>Посмотреть все уровни сообщений кроме сообщений отладки можно так:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">journalctl</span> <span class="o">-</span><span class="n">u</span> <span class="n">tgbot</span> <span class="o">-</span><span class="n">p</span> <span class="mi">6</span>
+</pre></div>
+</div>
+<p>Ну и, конечно, можно все объединить - посмотреть журнал сервиса tgbot за период и показать только ошибки:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">journalctl</span> <span class="o">-</span><span class="n">u</span> <span class="n">tgbot</span> <span class="o">-</span><span class="n">p</span> <span class="mi">3</span> <span class="o">--</span><span class="n">since</span> <span class="s2">&quot;2023-06-18 09:00:00&quot;</span> <span class="o">--</span><span class="n">until</span> <span class="s2">&quot;2023-06-19 10:00:00&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Нижняя область">
+        <a href="quick_start.html" class="btn btn-neutral float-left" title="Быстрый старт." accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Предыдущая</a>
+        <a href="using_git.html" class="btn btn-neutral float-right" title="Использование git и github.com для обновления бота" accesskey="n" rel="next">Следующая <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Robotvasya.</p>
+  </div>
+
+  Собрано при помощи <a href="https://www.sphinx-doc.org/">Sphinx</a> с использованием
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">темы,</a>
+    предоставленной <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
