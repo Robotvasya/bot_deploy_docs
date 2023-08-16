@@ -24,10 +24,10 @@ jobs:
         run: |
           pwd
           ls
-          ls docs/
-          ls ./docs
-          docs/make clean
-          docs/make html          
+          cd docs/
+          make clean
+          make html  
+          cd ..
       - name: Init new repo in dist folder and commit generated files
         run: |
           cd docs/build/html/
