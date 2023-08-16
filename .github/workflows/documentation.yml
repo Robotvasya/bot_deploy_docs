@@ -22,8 +22,8 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
       - name: Make docs
         run: |
-          ./docs/make clean
-          ./docs/make html          
+          docs/make clean
+          docs/make html          
       - name: Init new repo in dist folder and commit generated files
         run: |
           cd docs/build/html/
