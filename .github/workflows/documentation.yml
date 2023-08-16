@@ -22,6 +22,10 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
       - name: Make docs
         run: |
+          pwd
+          ls
+          ls docs/
+          ls ./docs
           docs/make clean
           docs/make html          
       - name: Init new repo in dist folder and commit generated files
