@@ -7,6 +7,8 @@ on:
 jobs:
   build_docs:
     runs-on: ubuntu_latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:  
       - name: Checkout
         uses: actions/checkout@v3    
