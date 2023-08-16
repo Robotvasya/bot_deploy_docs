@@ -18,6 +18,6 @@
 Таблицы и указатели
 ===================
 
-#* :ref:`genindex`
+* :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
