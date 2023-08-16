@@ -23,7 +23,7 @@ jobs:
       - name: Make docs
         run: |
           ./docs/make clean
-          ./docs/make html
+          ./docs/make html          
       - name: Init new repo in dist folder and commit generated files
         run: |
           cd docs/build/html/
@@ -33,6 +33,14 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git commit -m 'deploy'
-          git branch docs
-          git push -u origin docs --force
+#          git branch docs
+#          git push -u origin docs --force
+          
+      - name: Force push to destination branch
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: docs
+          force: true
+          directory: ./docs/build/html
     
