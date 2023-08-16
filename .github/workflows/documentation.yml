@@ -32,20 +32,18 @@ jobs:
         run: |
           cd docs/build/html/
           git init
-          git branch docs
           touch .nojekyll
           git add -A
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git commit -m 'deploy'   
-          git checkout docs
-          git push docs --force
+          git commit -m 'deploy'  
+
           
-#      - name: Force push to destination branch
-#        uses: ad-m/github-push-action@v0.6.0
-#        with:
-#          github_token: ${{ secrets.GITHUB_TOKEN }}
-#          branch: docs
-#          force: true
-#          directory: ./docs/build/html
+      - name: Force push to destination branch
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: docs
+          force: true
+          directory: ./docs/build/html
     
