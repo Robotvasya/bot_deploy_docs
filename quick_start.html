@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="ru" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Быстрый старт. &mdash; документация Деплой бота на хостинг 0.1.0</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=6ff560e8"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+        <script src="_static/copybutton.js?v=f281be69"></script>
+        <script src="_static/translations.js?v=29b1f277"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Алфавитный указатель" href="genindex.html" />
+    <link rel="search" title="Поиск" href="search.html" />
+    <link rel="next" title="Деплой бота на сервер." href="deploy.html" />
+    <link rel="prev" title="Документация по деплою telegram бота на тестовый сервер Telegram bot hosting" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Деплой бота на хостинг
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Поиск в документации" aria-label="Поиск в документации" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Меню навигации">
+              <p class="caption" role="heading"><span class="caption-text">Оглавление:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Быстрый старт.</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">Общая информация.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">Подготовка к запуску бота.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">Запуск бота.</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="deploy.html">Деплой бота на сервер.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using_git.html">Использование git и github.com для обновления бота</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Меню навигации для мобильных устройств" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Деплой бота на хостинг</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Навигация по страницам">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Быстрый старт.</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>Быстрый старт.<a class="headerlink" href="#id1" title="Link to this heading"></a></h1>
+<section id="id2">
+<h2>Общая информация.<a class="headerlink" href="#id2" title="Link to this heading"></a></h2>
+<p>Данная короткая инструкция описывает основной порядок действий для уверенных пользователей ОС Linux.</p>
+<p>Устанавливаем телеграм бота на выделенный сервер под управлением Linux семейства Ubuntu.
+Телеграм бот будет запускаться от непривелегированного пользователя, и управляться systemd.</p>
+<p>Для простоты будем считать, что вы уже подключились к серверу и скопировали на него исходный код своего бота.</p>
+<p>Для других подробностей - смотрите соответствующие разделы настоящей документации.</p>
+</section>
+<section id="id3">
+<h2>Подготовка к запуску бота.<a class="headerlink" href="#id3" title="Link to this heading"></a></h2>
+<p>Бот будет запускаться от пользователя <code class="docutils literal notranslate"><span class="pre">tgbot</span></code> из папки <code class="docutils literal notranslate"><span class="pre">/opt/my_bot</span></code>, а исходник например, лежит в <code class="docutils literal notranslate"><span class="pre">~/bot_source</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>adduser<span class="w"> </span>--system<span class="w"> </span>tgbot
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>/opt/my_bot
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cp<span class="w"> </span>~/bot_source/*<span class="w"> </span>/opt/my_bot
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>/opt/my_bot
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3.11<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>venv
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>venv/bin/activate
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>deactivate
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>chown<span class="w"> </span>-R<span class="w"> </span>tgbot<span class="w"> </span>/opt/my_bot
+</pre></div>
+</div>
+</section>
+<section id="id4">
+<h2>Запуск бота.<a class="headerlink" href="#id4" title="Link to this heading"></a></h2>
+<p>Создаем системный юнит:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cat<span class="w"> </span>&gt;<span class="w"> </span>/etc/systemd/system/tgbot.service
+</pre></div>
+</div>
+<p>Вставляем:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[Unit]</span>
+<span class="na">Description</span><span class="o">=</span><span class="s">Test echo Bot</span>
+<span class="na">After</span><span class="o">=</span><span class="s">syslog.target</span>
+<span class="na">After</span><span class="o">=</span><span class="s">network.target</span>
+
+<span class="k">[Service]</span>
+<span class="na">User</span><span class="o">=</span><span class="s">tgbot</span>
+<span class="na">Type</span><span class="o">=</span><span class="s">simple</span>
+<span class="na">WorkingDirectory</span><span class="o">=</span><span class="s">/opt/my_bot</span>
+<span class="na">ExecStart</span><span class="o">=</span><span class="s">/opt/my_bot/venv/bin/python /opt/my_bot/cli.py</span>
+<span class="na">Restart</span><span class="o">=</span><span class="s">on-failure</span>
+<span class="na">RestartSec</span><span class="o">=</span><span class="s">5</span>
+<span class="na">StartLimitBurst</span><span class="o">=</span><span class="s">5</span>
+
+<span class="k">[Install]</span>
+<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
+</pre></div>
+</div>
+<p>Проверяем на ошибки:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>systemd-analyze<span class="w"> </span>verify<span class="w"> </span>/etc/systemd/system/tgbot.service
+</pre></div>
+</div>
+<p>Обновляем systemd и ставим в автозагрузку:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>systemctl<span class="w"> </span>daemon-reload
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>tgbot
+</pre></div>
+</div>
+<p>Запускаем:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>systemctl<span class="w"> </span>start<span class="w"> </span>tgbot
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Нижняя область">
+        <a href="index.html" class="btn btn-neutral float-left" title="Документация по деплою telegram бота на тестовый сервер Telegram bot hosting" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Предыдущая</a>
+        <a href="deploy.html" class="btn btn-neutral float-right" title="Деплой бота на сервер." accesskey="n" rel="next">Следующая <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Авторские права 2023, Robotvasya. </p>
+  </div>
+
+  Собрано при помощи <a href="https://www.sphinx-doc.org/">Sphinx</a> с использованием
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">темы,</a>
+    предоставленной <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
