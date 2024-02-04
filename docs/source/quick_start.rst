@@ -85,6 +85,12 @@
   [Install]
   WantedBy=multi-user.target
 
+Проверяем на ошибки:
+
+.. code-block:: bash
+
+  systemd-analyze verify /etc/systemd/system/tgbot.service
+
 Обновляем systemd и ставим в автозагрузку:
 
 .. code-block:: bash
